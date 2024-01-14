@@ -69,7 +69,6 @@ module.exports.deleteItem = async function(req,res){
      
 }
 
-
 //3.edit the product
 module.exports.updateItem = async function(req,res){
      
@@ -177,6 +176,28 @@ module.exports.getItem =async function(req,res){
 //6.increase quantity 
 module.exports.increaseQuantityItem = async function(req,res){
      
+   try{
+
+      const itemId = req.params.id;
+
+       const item = await Item.findById(itemId);
+        item.quantity = item.quantity + 1;
+        item.save();
+        console.log(item.quantity);
+        return res.status(201).json({
+            message:"Item Quantity increase Successfully",
+            data:item
+        })
+
+   }catch(err){
+      
+       console.log("Error in increasing Quantity",err);
+
+       return  res.status(500).json({
+            message:"Internal Server Error",
+       })
+
+   }
 
 }
 

@@ -10,6 +10,7 @@ router.post('/add',itemController.addItem);
 router.delete('/delete/:id',itemController.deleteItem);
 router.put('/update/:id',itemController.updateItem);
 router.get('/get-item/:id',itemController.getItem);
+router.put('/increase-quantity/:id',itemController.increaseQuantityItem);
 
 
 
