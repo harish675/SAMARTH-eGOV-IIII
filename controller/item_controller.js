@@ -181,6 +181,14 @@ module.exports.increaseQuantityItem = async function(req,res){
       const itemId = req.params.id;
 
        const item = await Item.findById(itemId);
+
+        if(!item){
+           console.log("item not found");
+
+           return res.status(404).json({
+               message:"Item Not found",
+           })
+        }
         item.quantity = item.quantity + 1;
         item.save();
         console.log(item.quantity);
@@ -206,6 +214,41 @@ module.exports.increaseQuantityItem = async function(req,res){
 module.exports.decreaseQuantityItem = async function(req,res){
 
 
+      try{
+          
+             const itemId = req.params.id;
+
+             const item = await Item.findById(itemId);
+
+             if(!item){
+               
+                console.log("item is not found");
+
+                return res.status(404).json({
+                     message:"Item not Found",
+                })
+
+             }
+             if(item.quantity > 0){
+               item.quantity  = item.quantity - 1;
+               item.save();
+             }
+             console.log(item.quantity);
+
+             return res.status(201).json({
+                   message:"item quantity decreased successfully",
+                   data:item,
+             })
+      }
+      catch(error){
+         
+          console.log("Error in decreasing Quantity",error);
+
+          return res.status(500).json({
+               message:"internal Server Error",
+          })
+
+      }
 
 
 }
