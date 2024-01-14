@@ -1,8 +1,28 @@
 
+ const Item = require('../model/ItemDetails');
 // 1.create or add the product
-
 module.exports.addItem = async function(req,res){
+   
+      try{
 
+         console.log(req.body);
+         
+         const newItem = await Item.create(req.body);         
+         console.log("new Item added successfully",newItem);
+
+         return res.status(201).json({
+            
+              message:"Item is added successfully",
+              data:newItem
+         })
+      }
+      catch(err){
+  
+         console.log("Error in adding item ..",err);
+         return res.status(500).json({
+              message:"Internal Server Error"
+         })
+      }
 
 }
 
