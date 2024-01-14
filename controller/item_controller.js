@@ -69,15 +69,32 @@ module.exports.deleteItem = async function(req,res){
 
 }
 
+
 //3.edit the product
 module.exports.updateItem = async function(req,res){
      
+
 
 }
 
 //4.get all the product list
 module.exports.getAllItem = async function(req,res){
+        
+    try{
+           
+         const itemList = await Item.find({});
+         return res.status(201).json({
+              message:"All items fetch successfully",
+              data:itemList
+         })   
+        
+    }catch(error){
 
+        console.log("error in getting all item ",error);
+        return res.status(500).json({
+            message:"Internal Server Message",
+        })
+    }
 
 }
 
