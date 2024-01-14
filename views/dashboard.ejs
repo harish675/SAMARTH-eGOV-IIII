@@ -1,0 +1,88 @@
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #e5e5e5;
+    }
+</style>
+<div>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>quantity</th>
+                <th>supplierInfo</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function () {
+    function fetchData() {
+        fetch('http://localhost:8000/item')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Check if data.data is an array before iterating
+                if (Array.isArray(data.data)) {
+                    // Process the data
+                    displayDataInTable(data.data);
+                } else {
+                    console.error('Error: Data is not an array', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching items:', error);
+            });
+    }
+
+    function displayDataInTable(data) {
+        const tableBody = document.getElementById('table-body');
+
+        // Clear existing table rows
+        tableBody.innerHTML = '';
+
+        // Loop through the data and create table rows
+        data.forEach(item => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item.name;
+            row.insertCell(1).textContent = item.category
+            row.insertCell(2).textContent = item.quantity
+            row.insertCell(3).textContent = item.supplierInfo
+            row.insertCell(4).textContent = item.price
+            ;
+        });
+    }
+    fetchData();
+});
+        
+    </script>
+</div>
