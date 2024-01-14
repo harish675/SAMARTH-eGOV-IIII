@@ -9,7 +9,7 @@ router.get('/',itemController.getAllItem);
 router.post('/add',itemController.addItem);
 router.delete('/delete/:id',itemController.deleteItem);
 router.put('/update/:id',itemController.updateItem);
-router.get('/getItem.:id',itemController.getItem);
+router.get('/get-item/:id',itemController.getItem);
 
 
 

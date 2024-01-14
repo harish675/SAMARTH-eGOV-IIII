@@ -100,6 +100,36 @@ module.exports.getAllItem = async function(req,res){
 
 //5.get one specific product
 module.exports.getItem =async function(req,res){
+
+   try{
+
+      const itemId = req.params.id;
+
+      const item = await Item.findById(itemId);
+
+      if(!item){
+          console.log("item not found");
+          return res.status(404).json({
+              message:"Item not Found",
+          })
+      }
+
+      console.log("item found successfully",item);
+
+      return res.status(201).json({
+            message:"Item fetch successfully",
+            data:item     
+      })
+   }
+   catch(err){
+      
+       console.log("Error in getting the item",err);
+
+       return res.status(500).json({
+            message:"Internal Server Error"
+       })
+
+   }
      
 
 }
