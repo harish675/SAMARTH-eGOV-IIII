@@ -1,5 +1,6 @@
 
- const Item = require('../model/ItemDetails');
+ const { default: mongoose } = require('mongoose');
+const Item = require('../model/ItemDetails');
 
 // 1.create or add the product
 module.exports.addItem = async function(req,res){
@@ -66,15 +67,55 @@ module.exports.deleteItem = async function(req,res){
 
    }
      
-
 }
 
 
 //3.edit the product
 module.exports.updateItem = async function(req,res){
      
+        try{
 
+            const itemId = req.params.id;
+            const updateData = req.body;
+            console.log(updateData);
 
+            //check if itemId is valid ObjectId before attempting to update
+            
+             if(!mongoose.Types.ObjectId.isValid(itemId)){
+
+               console.log("invalid Item Id");
+
+               return res.status(400).json({
+                    message:"Invalid Item ID",
+               });
+
+             }
+
+            const updatedItem = await Item.findByIdAndUpdate(itemId , updateData ,{new:true});
+
+            if(!updatedItem){
+               
+                console.log("Item not found");
+                return res.status(404).json({
+                    message:"Item not found",
+                })
+            }
+
+            console.log("item updated successfully",updatedItem);
+
+            return res.status(201).json({
+                  message:"Product updated successfully",
+                  data:updatedItem
+            })
+        }
+        catch(err){
+         
+          console.log("Error in updating item",err);
+          return res.status(500).json({
+               message:"Internal Server Error",
+          })
+
+        }
 }
 
 //4.get all the product list
@@ -131,7 +172,6 @@ module.exports.getItem =async function(req,res){
 
    }
      
-
 }
 
 //6.increase quantity 
